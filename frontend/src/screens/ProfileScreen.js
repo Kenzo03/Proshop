@@ -4,9 +4,9 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { getUserDetails, updateUser } from "../actions/userActions";
+import { getUserDetails, updateUserProfile } from "../actions/userActions";
 import { listMyOrders } from "../actions/orderActions";
-import { USER_UPDATE_RESET } from "../constants/userConstants";
+import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState("");
@@ -23,8 +23,8 @@ const RegisterScreen = ({ location, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
-  const userUpdate = useSelector((state) => state.userUpdate);
-  const { success } = userUpdate;
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const { success } = userUpdateProfile;
 
   const orderListMy = useSelector((state) => state.orderListMy);
   const { loading: loadingOrders, error: errorOrders, orders } = orderListMy;
@@ -34,7 +34,7 @@ const RegisterScreen = ({ location, history }) => {
       history.push("/login");
     } else {
       if (!user || !user.name || success) {
-        dispatch({ type: USER_UPDATE_RESET });
+        dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
         dispatch(listMyOrders());
       } else {
@@ -49,7 +49,7 @@ const RegisterScreen = ({ location, history }) => {
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
     } else {
-      dispatch(updateUser({ id: user._id, name, email, password }));
+      dispatch(updateUserProfile({ id: user._id, name, email, password }));
     }
   };
 
